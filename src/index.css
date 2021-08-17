@@ -1,0 +1,25 @@
+body {
+    background: linear-gradient(270deg, #108dc7, #ef8e38);
+    background-size: 400% 400%;
+
+    animation: TransientFading 16s ease infinite;
+}
+
+@keyframes TransientFading {
+    0% {
+        background-position: 0 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0 50%;
+    }
+}
+
+#main_text {
+    font-family: 'Secular One', sans-serif;
+    color: white;
+}
