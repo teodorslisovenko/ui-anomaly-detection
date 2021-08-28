@@ -1,6 +1,8 @@
 import React, { useCallback, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { anomalySchema } from "../schemas/anomaly-schema";
+import { staticVariables } from "../assets/static-variables/static-variables";
+
 import { validate } from "jsonschema";
 import { Link } from "react-router-dom";
 
@@ -10,6 +12,8 @@ import styled from "styled-components";
 
 function Upload() {
   const [anomalies, setAnomalies] = useState([]);
+  const [remoteAnomalies, setRemoteAnomalies] = useState([]);
+
   const [validUpload, setValidUpload] = useState(false);
   let files = null;
 
@@ -67,6 +71,22 @@ function Upload() {
     }
   }, [anomalies, validUpload]);
 
+  // Remotely fetching data from endpoint
+  useEffect(() => {
+    fetch(staticVariables.url)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Problem with the fetching data from endpoint");
+        }
+      })
+      .then((data) => {
+        console.log(data);
+        setRemoteAnomalies((oldArray) => [...oldArray, data]);
+      });
+  }, []);
+
   if (validUpload) {
     files = acceptedFiles.map((file) => (
       <li key={file.path}>
@@ -88,7 +108,12 @@ function Upload() {
       </Container>
       <aside className="text-start">
         <h3 id="main_text" className="p-3 text-center">
-          <Link to={{ pathname: "/anomalies", state: { anomalies: null } }}>
+          <Link
+            to={{
+              pathname: "/anomalies",
+              state: { anomalies: remoteAnomalies },
+            }}
+          >
             I do not have any files and use streams as data provider
             <br />
             (Click this link)

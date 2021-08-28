@@ -1,7 +1,9 @@
 import React from "react";
 import Home from "./home-component/home";
-import AnomalyMap from "./anomaly-map-component/anomaly-map";
-import NotFoundError from "./error-component/NotFoundError";
+import AnomalyContainer from "./anomaly-map-component/anomaly-container";
+import NotFoundError from "./error-component/not-found-error";
+import UnpassedAnomaliesError from "./error-component/unpassed-anomalies-error";
+
 
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
@@ -15,7 +17,10 @@ const App = () => {
           <Home />
         </Route>
         <Route path="/anomalies">
-          <AnomalyMap />
+          <AnomalyContainer />
+        </Route>
+        <Route path="/unpassed-anomalies">
+          <UnpassedAnomaliesError />
         </Route>
         <Route path="*">
           <NotFoundError />
