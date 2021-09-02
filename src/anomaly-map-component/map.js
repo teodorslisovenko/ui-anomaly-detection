@@ -1,9 +1,11 @@
 import React from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import MarkerClusterGroup from "react-leaflet-markercluster";
 import L from "leaflet";
 import LocalChart from "../chart-components/local-chart";
 import styled from "styled-components";
 import "leaflet/dist/leaflet.css";
+import "react-leaflet-markercluster/dist/styles.min.css";
 import DataFormatation from "./data-formatation";
 
 // For some reason, react-leaflet has some issues loading up the standard icon picture for those markers,
@@ -30,10 +32,7 @@ const anomalayIcon = L.icon({
   iconAnchor: [12, 41],
 });
 
-
 const Map = ({ data }) => {
-  // console.log(answer);
-
   const localData = DataFormatation(data, "local");
 
   console.log(localData);
@@ -42,14 +41,11 @@ const Map = ({ data }) => {
     let markerCollection = [];
     let counter = 0;
 
-    // console.log(data);
-
     for (const features of results) {
       for (const anomaly of features.ranking) {
         const { anomaly_level, coordinates, feature, importance, value } =
           anomaly;
         counter++;
-        //console.log(counter);
         markerCollection.push(
           <Marker
             key={counter}
@@ -125,15 +121,18 @@ const Map = ({ data }) => {
   return (
     <Main>
       <MapContainer
+        className="markercluster-map"
         style={{ height: "99vh", width: "198vh" }}
-        center={[40.0, 15.0]}
-        zoom={7}
+        center={[48.0, 15.0]}
+        zoom={5}
       >
         <TileLayer
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {markers.map((marker) => marker)}
+        <MarkerClusterGroup>
+          {markers.map((marker) => marker)}
+        </MarkerClusterGroup>
       </MapContainer>
     </Main>
   );

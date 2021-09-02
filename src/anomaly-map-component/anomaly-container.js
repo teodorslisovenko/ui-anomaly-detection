@@ -21,7 +21,6 @@ function AnomalyContainer() {
 
   const globalData = DataFormatation(anomalies, "global");
 
-   console.log(anomalies);
   return (
     <>
       <h1></h1>
@@ -34,7 +33,7 @@ function AnomalyContainer() {
           onClick={() => setShow(!show)}
           id="default_heading"
         >
-          Show global map
+          Show global chart
         </ShowMap>
       </Main>
     </>

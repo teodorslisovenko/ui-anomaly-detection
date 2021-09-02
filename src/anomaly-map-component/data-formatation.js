@@ -38,11 +38,7 @@ export default function DataFormatation(data, globalOrLocal) {
       }, {})
     );
 
-    //   console.log(totalLabels);
-    //   console.log(unionFeatures);
-
     return { labels: totalLabels, features: unionFeatures };
-
   } else if (globalOrLocal === "local") {
     const featureValuesAndLabels = data.map(({ results }) => {
       let batchFeatures = [];
@@ -54,7 +50,7 @@ export default function DataFormatation(data, globalOrLocal) {
             name: feature,
             value: value,
             importance: importance,
-            anomaly_level: anomaly_level
+            anomaly_level: anomaly_level,
           });
         }
       }

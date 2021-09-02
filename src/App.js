@@ -4,7 +4,6 @@ import AnomalyContainer from "./anomaly-map-component/anomaly-container";
 import NotFoundError from "./error-component/not-found-error";
 import UnpassedAnomaliesError from "./error-component/unpassed-anomalies-error";
 
-
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";

@@ -114,7 +114,7 @@ function Upload() {
               state: { anomalies: remoteAnomalies },
             }}
           >
-            I do not have any files and use streams as data provider
+            I do not have any files and use endpoint as data provider
             <br />
             (Click this link)
           </Link>
