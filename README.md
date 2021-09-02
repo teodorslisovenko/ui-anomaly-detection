@@ -2,7 +2,7 @@
 
 **This project is part of traineeship of Teodors Lisovenko at University of Bari Aldo Moro.**
 
-![title-picture](/assets/title-picture.png)
+![title-picture](title-picture.PNG)
 
 ## *The summary of the project:* ##
 
