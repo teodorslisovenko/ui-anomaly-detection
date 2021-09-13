@@ -40,17 +40,26 @@ const GlobalChart = ({ data }) => {
             stroke="#0000FF"
           />
           {/* <Legend layout="vetical" verticalAlign="top" align="right" /> */}
-          {labelArray.map((label, index) => (
-            <Area
-              type="monotone"
-              stackId={label}
-              isAnimationActive={false}
-              key={index}
-              dataKey={label}
-              stroke={randomcolor(index)}
-              fill={randomcolor(index)}
-            />
-          ))}
+          {labelArray.map((label, index) => {
+
+            const fillColor = randomcolor({
+              luminosity: "dark",
+              format: "hsla",
+              alpha: 1,
+            });
+
+            return (
+              <Area
+                type="monotone"
+                stackId={label}
+                isAnimationActive={false}
+                key={index}
+                dataKey={label}
+                stroke={fillColor}
+                fill={fillColor}
+              />
+            );
+          })}
         </AreaChart>
       </ResponsiveContainer>
     </Container>
@@ -64,7 +73,7 @@ export default GlobalChart;
 const Container = styled.div`
   height: 45rem;
   width: 55rem;
-  position: absolute;
+  position: fixed;
   margin-top: 1%;
   margin-left: 53%;
   z-index: 314159;

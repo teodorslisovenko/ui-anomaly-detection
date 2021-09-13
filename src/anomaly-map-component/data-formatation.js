@@ -51,6 +51,7 @@ export default function DataFormatation(data, globalOrLocal) {
             value: value,
             importance: importance,
             anomaly_level: anomaly_level,
+            anomalus: features.anomaly === "true" ? "yes" : "no",
           });
         }
       }

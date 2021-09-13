@@ -28,7 +28,7 @@ const LocalChart = ({ featureName, anomalies }) => {
 
     console.log(props);
 
-    if (dataKey === "value" && payload.anomaly_level > 0) {
+    if (dataKey === "value" && payload.anomalus === "yes") {
       return (
         <svg
           x={cx - 6}
@@ -86,16 +86,26 @@ const LocalChart = ({ featureName, anomalies }) => {
         <Tooltip />
         <Brush dataKey="date" height={30} stroke="#0000FF" />
         <Legend />
-        {["value", "importance", "anomaly_level"].map((label, index) => (
-          <Line
-            type="monotone"
-            key={index}
-            dataKey={label}
-            strokeWidth={2}
-            stroke={label === "value" ? randomcolor() : null}
-            dot={<CustomizedDot />}
-          />
-        ))}
+        {["value", "importance", "anomaly_level", "anomalus"].map(
+          (label, index) => (
+            <Line
+              type="monotone"
+              key={index}
+              dataKey={label}
+              strokeWidth={2}
+              stroke={
+                label === "value"
+                  ? randomcolor({
+                      luminosity: "dark",
+                      format: "rgba",
+                      alpha: 1,
+                    })
+                  : null
+              }
+              dot={<CustomizedDot />}
+            />
+          )
+        )}
       </LineChart>
     </ResponsiveContainer>
   );

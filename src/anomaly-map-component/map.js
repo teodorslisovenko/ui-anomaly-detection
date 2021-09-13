@@ -1,5 +1,5 @@
 import React from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, ZoomControl } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import L from "leaflet";
 import LocalChart from "../chart-components/local-chart";
@@ -125,11 +125,14 @@ const Map = ({ data }) => {
         style={{ height: "99vh", width: "198vh" }}
         center={[48.0, 15.0]}
         zoom={5}
+        zoomControl= {false} 
       >
+        
         <TileLayer
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
+        <ZoomControl position="bottomright" />
         <MarkerClusterGroup>
           {markers.map((marker) => marker)}
         </MarkerClusterGroup>
@@ -147,8 +150,6 @@ const Main = styled.div`
   z-index: 314159;
   pointer-events: initial;
 `;
-
-// Styling a markers popup
 
 const StyledPopup = styled(Popup)`
   width: 1000px;
