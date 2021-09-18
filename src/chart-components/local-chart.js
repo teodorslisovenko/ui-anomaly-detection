@@ -42,26 +42,7 @@ const LocalChart = ({ featureName, anomalies }) => {
       );
     }
     return null;
-
-    // return (
-    //   <svg
-    //     x={cx - 7}
-    //     y={cy - 7}
-    //     width={75}
-    //     height={75}
-    //     fill="green"
-    //     viewBox="0 0 1024 1024"
-    //   >
-    //     <circle
-    //       cx="95"
-    //       cy="95"
-    //       r="95"
-    //       stroke="black"
-    //       strokeWidth="10"
-    //       fill="green"
-    //     />
-    //   </svg>
-    // );
+    
   };
   
   return (

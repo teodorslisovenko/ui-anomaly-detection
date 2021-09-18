@@ -80,3 +80,10 @@ The main libraries in use are:
 ### *To-do's...* ###
 
 - [x] Do the refactoring of code, fix bugs and optimize what can be optimized.   
+
+## Milestone1 (September 25th): ##
+
+> Implement a slicer functionality. 
+### *To-do's...* ###
+
+- [x] Develop a slider that can select a time interval and slice it to have only visualize features from that date period.
