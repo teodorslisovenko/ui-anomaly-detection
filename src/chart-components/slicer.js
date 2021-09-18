@@ -1,30 +1,58 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Slider, { Range } from "rc-slider";
+import { Range } from "rc-slider";
 import "rc-slider/assets/index.css";
 
-const Slicer = () => {
-  const [val, setVal] = useState([0, 1]);
+const Slicer = ({ filter, data }) => {
+  const [interval, setInterval] = useState([
+    data.totalCount - 5,
+    data.totalCount,
+  ]);
 
-  console.log(val);
+  // Based on dateId get the timestamp like 24/12/2012
+  const getDateString = (index) => {
+    const dateString = data.features.find(
+      (feature) => feature.dateId === index
+    );
+    return dateString.date;
+  };
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => {
+    // First loadup with just a interval of last five dates.
+    filter(data.totalCount - 5, data.totalCount);
+  }, []);
 
   return (
     <Container>
-      <Indicator>{val[0]}</Indicator>
-      <Range
-        pushable={true}
-        draggableTrack={true}
-        allowCross={false}
-        s
-        min={0}
-        max={10}
-        step={1}
-        value={val}
-        onChange={(value) => {
-          setVal(value);
-        }}
-      />
-      <Indicator>{val[1]}</Indicator>
+      <h3 className="pt-3" id="default_heading">
+        Slice the time interval
+      </h3>
+      <Slider>
+        <Indicator>{getDateString(interval[0])}</Indicator>
+        <Range
+          pushable={true}
+          draggableTrack={true}
+          allowCross={false}
+          min={1}
+          max={data.totalCount}
+          step={1}
+          value={interval}
+          onChange={(dateId) => {
+            setInterval(dateId);
+          }}
+        />
+        <Indicator>{getDateString(interval[1])}</Indicator>
+      </Slider>
+      <div class="d-grid col-5 pb-4 mx-auto">
+        <button
+          type="button"
+          className="btn btn-dark "
+          onClick={() => filter(interval[0], interval[1])}
+        >
+          <span id="default_heading">Slice</span>
+        </button>
+      </div>
     </Container>
   );
 };
@@ -32,10 +60,10 @@ const Slicer = () => {
 export default Slicer;
 
 const Container = styled.div`
-  height: 6rem;
-  width: 90rem;
+  height: 10rem;
+  width: 100rem;
   position: fixed;
-  margin-top: 43%;
+  margin-top: 40%;
   margin-left: 1%;
   z-index: 314159;
   pointer-events: initial;
@@ -46,8 +74,13 @@ const Container = styled.div`
   box-shadow: 5px 10px;
 
   display: grid;
+  grid-template-rows: 15% 70% 15%;
+  align-items: center;
+`;
+const Slider = styled.div`
+  display: grid;
   grid-template-columns: 10.4% 78% 10.4%;
-  align-items: center; 
+  align-items: center;
   gap: 1% 1%;
 `;
 

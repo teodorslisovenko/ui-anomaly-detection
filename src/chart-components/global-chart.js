@@ -9,18 +9,12 @@ import {
   Tooltip,
   ResponsiveContainer,
   Brush,
+  Legend,
 } from "recharts";
 import randomcolor from "randomcolor";
 
-const GlobalChart = ({ data }) => {
-  const { features, labels } = data;
+const GlobalChart = ({ labels, features }) => {
   const labelArray = [...labels];
-
-  features.sort(function (a, b) {
-    var aa = a.date.split("/").reverse().join(),
-      bb = b.date.split("/").reverse().join();
-    return aa < bb ? -1 : aa > bb ? 1 : 0;
-  });
 
   return (
     <Container>
@@ -32,16 +26,9 @@ const GlobalChart = ({ data }) => {
           <YAxis />
           <YAxis />
           <Tooltip />
-          <Brush
-            startIndex="1"
-            endIndex="20"
-            dataKey="date"
-            height={30}
-            stroke="#0000FF"
-          />
+          <Brush dataKey="date" height={30} stroke="#0000FF" />
           {/* <Legend layout="vetical" verticalAlign="top" align="right" /> */}
           {labelArray.map((label, index) => {
-
             const fillColor = randomcolor({
               luminosity: "dark",
               format: "hsla",

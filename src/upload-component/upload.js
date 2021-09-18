@@ -22,9 +22,6 @@ function Upload() {
     acceptedFiles.forEach((file) => {
       const reader = new FileReader();
 
-      reader.onabort = () => console.log("file reading was aborted");
-      reader.onerror = () => console.log("file reading has failed");
-
       reader.onload = () => {
         const json = JSON.parse(new TextDecoder().decode(reader.result));
         const validationResults = validate(json, anomalySchema);
@@ -67,7 +64,7 @@ function Upload() {
           timer: 1500,
         });
       }
-      console.log(anomalies);
+      //console.log(anomalies);
     }
   }, [anomalies, validUpload]);
 
@@ -82,7 +79,6 @@ function Upload() {
         }
       })
       .then((data) => {
-        console.log(data);
         setRemoteAnomalies((oldArray) => [...oldArray, data]);
       });
   }, []);

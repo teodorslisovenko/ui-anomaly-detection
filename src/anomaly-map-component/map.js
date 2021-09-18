@@ -1,12 +1,17 @@
 import React from "react";
-import { MapContainer, TileLayer, Marker, Popup, ZoomControl } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  ZoomControl,
+} from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import L from "leaflet";
 import LocalChart from "../chart-components/local-chart";
 import styled from "styled-components";
 import "leaflet/dist/leaflet.css";
 import "react-leaflet-markercluster/dist/styles.min.css";
-import DataFormatation from "./data-formatation";
 
 // For some reason, react-leaflet has some issues loading up the standard icon picture for those markers,
 // so in the next few lines, we are resetting them manually.
@@ -33,90 +38,85 @@ const anomalayIcon = L.icon({
 });
 
 const Map = ({ data }) => {
-  const localData = DataFormatation(data, "local");
-
-  console.log(localData);
-
-  const markers = data.map(({ results }) => {
+  const markers = data.map((anomaly) => {
     let markerCollection = [];
     let counter = 0;
+    const {
+      anomaly_level,
+      coordinates,
+      name,
+      importance,
+      value,
+      anomalus,
+      date,
+    } = anomaly;
+    counter++;
+    markerCollection.push(
+      <Marker
+        key={counter}
+        position={[coordinates.y, coordinates.x]}
+        icon={anomalus === "yes" ? anomalayIcon : defaultIcon}
+      >
+        <StyledPopup maxWidth="1000" maxHeight="auto">
+          <Container>
+            <InfoContent>
+              <h1 id="default_heading">Feature info</h1>
+              <table className="table table-primary table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Attribute</th>
+                    <th scope="col">Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Feature name:</td>
+                    <td>{name}</td>
+                  </tr>
+                  <tr>
+                    <td>Timestamp:</td>
+                    <td>{date}</td>
+                  </tr>
+                  <tr>
+                    <td>Value:</td>
+                    <td>{value}</td>
+                  </tr>
+                  <tr>
+                    <td>Importance:</td>
+                    <td>{importance}</td>
+                  </tr>
+                  <tr>
+                    <td>Anomaly level:</td>
+                    <td>{anomaly_level}</td>
+                  </tr>
+                  <tr>
+                    <td>Coordinates:</td>
+                    <td>
+                      Longitude X: {coordinates.x.substring(0, 7)} <br />
+                      Latitude Y: {coordinates.y.substring(0, 7)}
+                    </td>
+                  </tr>
+                  <tr
+                    className={
+                      anomalus === "yes" ? "table-danger" : "table-primary"
+                    }
+                  >
+                    <td>Anomalous:</td>
+                    <td>{anomalus.toUpperCase()}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </InfoContent>
+            <ChartContent>
+              <LocalChart featureName={name} anomalies={data} />
+            </ChartContent>
+          </Container>
+        </StyledPopup>
+      </Marker>
+    );
 
-    for (const features of results) {
-      for (const anomaly of features.ranking) {
-        const { anomaly_level, coordinates, feature, importance, value } =
-          anomaly;
-        counter++;
-        markerCollection.push(
-          <Marker
-            key={counter}
-            position={[coordinates.y, coordinates.x]}
-            icon={features.anomaly === "true" ? anomalayIcon : defaultIcon}
-          >
-            <StyledPopup maxWidth="1000" maxHeight="auto">
-              <Container>
-                <InfoContent>
-                  <h1 id="default_heading">Feature info</h1>
-                  <table className="table table-primary table-striped">
-                    <thead>
-                      <tr>
-                        <th scope="col">Attribute</th>
-                        <th scope="col">Value</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>Feature name:</td>
-                        <td>{feature}</td>
-                      </tr>
-                      <tr>
-                        <td>Timestamp:</td>
-                        <td>{features.timestamp}</td>
-                      </tr>
-                      <tr>
-                        <td>Value:</td>
-                        <td>{value}</td>
-                      </tr>
-                      <tr>
-                        <td>Importance:</td>
-                        <td>{importance}</td>
-                      </tr>
-                      <tr>
-                        <td>Anomaly level:</td>
-                        <td>{anomaly_level}</td>
-                      </tr>
-                      <tr>
-                        <td>Coordinates:</td>
-                        <td>
-                          Longitude X: {coordinates.x.substring(0, 7)} <br />
-                          Latitude Y: {coordinates.y.substring(0, 7)}
-                        </td>
-                      </tr>
-                      <tr
-                        className={
-                          features.anomaly === "true"
-                            ? "table-danger"
-                            : "table-primary"
-                        }
-                      >
-                        <td>Anomalous:</td>
-                        <td>{features.anomaly === "true" ? "YES" : "NO"}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </InfoContent>
-                <ChartContent>
-                  <LocalChart featureName={feature} anomalies={localData} />
-                </ChartContent>
-              </Container>
-            </StyledPopup>
-          </Marker>
-        );
-      }
-    }
     return markerCollection;
   });
-
-  // console.log(markers);
 
   return (
     <Main>
@@ -125,9 +125,8 @@ const Map = ({ data }) => {
         style={{ height: "99vh", width: "198vh" }}
         center={[48.0, 15.0]}
         zoom={5}
-        zoomControl= {false} 
+        zoomControl={false}
       >
-        
         <TileLayer
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
