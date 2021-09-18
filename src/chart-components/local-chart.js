@@ -17,16 +17,8 @@ const LocalChart = ({ featureName, anomalies }) => {
     (anomaly) => anomaly.name === featureName
   );
 
-  featureOfInterest.sort(function (a, b) {
-    var aa = a.date.split("/").reverse().join(),
-      bb = b.date.split("/").reverse().join();
-    return aa < bb ? -1 : aa > bb ? 1 : 0;
-  });
-
   const CustomizedDot = (props) => {
     const { cx, cy, payload, dataKey } = props;
-
-    console.log(props);
 
     if (dataKey === "value" && payload.anomalus === "yes") {
       return (
@@ -71,12 +63,7 @@ const LocalChart = ({ featureName, anomalies }) => {
     //   </svg>
     // );
   };
-
-  // const formatXAxis = tickItem => {
-  //   console.log(tickItem);
-  //   return null;
-  // }
-
+  
   return (
     <ResponsiveContainer width="100%" height="100%">
       <LineChart width={500} height={300} data={featureOfInterest}>

@@ -28,6 +28,8 @@ body {
     font-family: 'Secular One', sans-serif;
 }
 
+/* Recharts and slider visual rewrite */
+
 .recharts-cartesian-axis-tick {
     font-size: 1rem;
     font-weight: bold;
@@ -43,31 +45,31 @@ body {
     margin-top: -8px;
     cursor: grab;
     border-radius: 50%;
-    border: solid 3px #0000FF;
+    border: solid 3px #11111b;
     background-color: #fff;
     touch-action: pan-x;
 }
 
 .rc-slider-track {
-    background-color: #0000FF;
+    background-color: #11111b;
     height: 5px;
     border-radius: 6px;
 }
 
 .rc-slider-handle:hover {
-    border-color: #0000FF;
+    border-color: #11111b;
 }
 
 .rc-slider-handle:active {
-    border-color: #0000FF;
-    box-shadow: 0 0 5px #0000FF;
+    border-color: #11111b;
+    box-shadow: 0 0 5px #11111b;
 }
 
 .rc-slider-handle-dragging.rc-slider-handle-dragging.rc-slider-handle-dragging {
-    border-color: #0000FF;
-    box-shadow: 0 0 0 5px dodgerblue;
+    border-color: #11111b;
+    box-shadow: 0 0 0 5px rgb(28, 134, 255);
 }
 
 .rc-slider-dot-active {
-    border-color: #0000FF;
+    border-color: #11111b;
 }

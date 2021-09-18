@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Map from "./map";
 import DataFormatation from "./data-formatation";
 import GlobalChart from "../chart-components/global-chart";
 import Slicer from "../chart-components/slicer";
-
 
 import { Redirect } from "react-router-dom";
 
@@ -16,7 +15,6 @@ function AnomalyContainer() {
   const [show, setShow] = useState(false);
   const [slicer, setSlicer] = useState(true);
 
-
   if (location.state === undefined) {
     return <Redirect to="/unpassed-anomalies" />;
   } else {
@@ -24,11 +22,42 @@ function AnomalyContainer() {
   }
 
   const globalData = DataFormatation(anomalies, "global");
+  const localData = DataFormatation(anomalies, "local");
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [selectedFeatures, setGlobalFeatures] = useState(globalData.features);
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [selectedLocalFeatures, setLocalFeatures] = useState(localData);
+
+  const filterFeatures = (startIndex, endIndex) => {
+    let filtratedGlobalFeatures = [];
+    for (const globalFeature of globalData.features) {
+      if (
+        globalFeature.dateId >= startIndex &&
+        globalFeature.dateId <= endIndex
+      ) {
+        filtratedGlobalFeatures.push(globalFeature);
+      }
+    }
+    setGlobalFeatures(filtratedGlobalFeatures);
+
+    let filtratedLocalFeatures = [];
+    for (const localFeature of localData) {
+      if (
+        localFeature.dateId >= startIndex &&
+        localFeature.dateId <= endIndex
+      ) {
+        filtratedLocalFeatures.push(localFeature);
+      }
+    }
+    setLocalFeatures(filtratedLocalFeatures);
+  };
 
   return (
     <>
       <Main>
-        <Map data={anomalies} />
+        <Map data={selectedLocalFeatures} />
         <ControlContainer>
           <ShowMap
             type="button"
@@ -47,8 +76,10 @@ function AnomalyContainer() {
             {slicer ? "Hide slicer" : "Show slicer"}
           </ShowSlicer>
         </ControlContainer>
-        {show ? <GlobalChart data={globalData} /> : null}
-        {slicer ? <Slicer/> : null}
+        {show ? (
+          <GlobalChart labels={globalData.labels} features={selectedFeatures} />
+        ) : null}
+        {slicer ? <Slicer data={globalData} filter={filterFeatures} /> : null}
       </Main>
     </>
   );
@@ -71,7 +102,7 @@ const ControlContainer = styled.div`
   left: 0.5%;
   display: grid;
   grid-template-columns: repeat(1, 5fr);
-  grid-template-rows: 1fr 1fr ;
+  grid-template-rows: 1fr 1fr;
   gap: 20px 20px;
 `;
 
